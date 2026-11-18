@@ -13,14 +13,35 @@
 
     <main>
         <section id="people-section">
-        <h2>1. Pessoas</h2>
-        <form id="form">
-            <label for="name">Nome</label>
-            <input type="text" id="name" placeholder="Digite um nome" required>
-            <button type="submit">Adicionar</button>
-        </form>
-        <ul id="list"></ul>
-        <p id="count">0 pessoas cadastradas</p>
+            <h2>1. Pessoas</h2>
+            <form id="form">
+                <label for="name">Nome</label>
+                <input type="text" id="name" placeholder="Digite um nome" required>
+                <button type="submit">Adicionar</button>
+            </form>
+            <ul id="list"></ul>
+            <p id="count">0 pessoas cadastradas</p>
+        </section>
+
+        <section id="settings-section">
+            <h2>2. Configurações</h2>
+
+            <div class="field">
+                <label for="groups-count">Número de grupos</label>
+                <input type="number" id="groups-count" min="1" value="2">
+            </div>
+
+            <div class="field">
+                <label for="max-members">Máximo de membros por grupo (opcional)</label>
+                <input type="number" id="max-members" min="1">
+            </div>
+
+            <fieldset>
+                <legend>Líderes</legend>
+                <label><input type="radio" name="leader-mode" value="none" checked> Sem líderes</label>
+                <label><input type="radio" name="leader-mode" value="manual"> Escolher manualmente</label>
+                <label><input type="radio" name="leader-mode" value="random"> Sortear</label>
+            </fieldset>
         </section>
     </main>
 </body>
