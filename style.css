@@ -191,6 +191,61 @@ button:focus-visible {
     margin-top: 16px;
 }
 
+.person {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 2px solid #cfd8d3;
+    border-radius: 10px;
+    margin-bottom: 8px;
+
+    .person-name {
+        font-weight: 600;
+        flex: 1;
+    }
+
+    .person-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .leader-toggle {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 400;
+        margin-bottom: 0;
+        cursor: pointer;
+    }
+}
+
+.person.is-leader {
+    border-color: #2e9e6b;
+    background-color: #e6f4ec;
+}
+
+input[type="checkbox"] {
+    accent-color: #1b6b4a;
+    width: 18px;
+    height: 18px;
+}
+
+.remove-button {
+    background-color: transparent;
+    color: #b3261e;
+    border: 2px solid #b3261e;
+    padding: 4px 10px;
+    font-size: 14px;
+}
+
+.remove-button:hover {
+    background-color: #b3261e;
+    color: #fff;
+}
+
 footer {
     margin-top: auto;
     font-size: 14px;
