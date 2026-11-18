@@ -23,7 +23,7 @@
             <p id="count">0 pessoas cadastradas</p>
         </section>
 
-        <section id="settings-section">
+        <section id="settings">
             <h2>2. Configurações</h2>
 
             <div class="field">
@@ -42,6 +42,13 @@
                 <label><input type="radio" name="leader-mode" value="manual"> Escolher manualmente</label>
                 <label><input type="radio" name="leader-mode" value="random"> Sortear</label>
             </fieldset>
+        </section>
+
+        <section id="draw">
+            <h2>3. Sorteio</h2>
+            <button type="button" id="draw-button">Sortear grupos</button>
+            <p id="message" role="alert"></p>
+            <div id="results"></div>
         </section>
     </main>
 </body>
