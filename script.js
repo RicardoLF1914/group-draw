@@ -13,6 +13,66 @@ const leaderModeInputs = document.querySelectorAll('input[name="leader-mode"]');
 let people = [];
 let nextId = 1;
 
+const STORAGE_KEY = "group-draw-state";
+
+function saveState() {
+    const state = {
+        people,
+        groupsCount: groupsCountInput.value,
+        maxMembers: maxMembersInput.value,
+        leaderMode: getLeaderMode()
+    };
+
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (error) {
+        console.warn("Could not save state:", error);
+    }
+}
+
+function isValidPerson(person) {
+    return (
+        person !== null &&
+        typeof person === "object" &&
+        Number.isInteger(person.id) &&
+        typeof person.name === "string" &&
+        typeof person.isLeader === "boolean"
+    );
+}
+
+function loadState() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) {
+            return;
+        }
+
+        const state = JSON.parse(saved);
+
+        if (Array.isArray(state.people)) {
+            people = state.people.filter(isValidPerson);
+            nextId = Math.max(0, ...people.map((person) => person.id)) + 1;
+        }
+
+        if (state.groupsCount !== undefined) {
+            groupsCountInput.value = state.groupsCount;
+        }
+
+        if (state.maxMembers !== undefined) {
+            maxMembersInput.value = state.maxMembers;
+        }
+
+        const modeInput = document.querySelector(
+            `input[name="leader-mode"][value="${state.leaderMode}"]`
+        );
+        if (modeInput) {
+            modeInput.checked = true;
+        }
+    } catch (error) {
+        console.warn("Could not load state:", error);
+    }
+}
+
 function getLeaderMode() {
     return document.querySelector('input[name="leader-mode"]:checked').value;
 }
@@ -25,16 +85,19 @@ function nameExists(name) {
 
 function addPerson(name) {
     people.push({ id: nextId++, name, isLeader: false });
+    saveState();
 }
 
 function removePerson(id) {
     people = people.filter((person) => person.id !== id);
+    saveState();
 }
 
 function toggleLeader(id) {
     const person = people.find((person) => person.id === id);
     if (person) {
         person.isLeader = !person.isLeader;
+        saveState();
     }
 }
 
@@ -224,8 +287,14 @@ nameInput.addEventListener("input", () => {
 });
 
 leaderModeInputs.forEach((input) => {
-    input.addEventListener("change", renderList);
+    input.addEventListener("change", () => {
+        renderList();
+        saveState();
+    });
 });
+
+groupsCountInput.addEventListener("input", saveState);
+maxMembersInput.addEventListener("input", saveState);
 
 drawButton.addEventListener("click", () => {
     message.textContent = "";
@@ -246,4 +315,5 @@ drawButton.addEventListener("click", () => {
     renderResults(result.groups);
 });
 
+loadState();
 render();
