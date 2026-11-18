@@ -6,6 +6,7 @@ const groupsCountInput = document.getElementById("groups-count");
 const maxMembersInput = document.getElementById("max-members");
 const drawButton = document.getElementById("draw-button");
 const message = document.getElementById("message");
+const results = document.getElementById("results");
 
 const leaderModeInputs = document.querySelectorAll('input[name="leader-mode"]');
 
@@ -99,6 +100,45 @@ function drawGroups(people, groupsCount, maxMembers, leaderMode) {
     return { groups };
 }
 
+function renderResults(groups) {
+    results.innerHTML = "";
+
+    groups.forEach((group, index) => {
+        const card = document.createElement("article");
+        card.className = "group";
+
+        const title = document.createElement("h3");
+        title.textContent = `Grupo ${index + 1}`;
+
+        const total = document.createElement("span");
+        total.textContent = group.members.length === 1
+            ? "1 pessoa"
+            : `${group.members.length} pessoas`;
+        title.appendChild(total);
+
+        const membersList = document.createElement("ul");
+
+        group.members.forEach((person) => {
+            const item = document.createElement("li");
+            item.textContent = person.name;
+
+            if (group.leader && person.id === group.leader.id) {
+                item.classList.add("leader");
+
+                const badge = document.createElement("span");
+                badge.className = "badge";
+                badge.textContent = "Líder";
+                item.appendChild(badge);
+            }
+
+            membersList.appendChild(item);
+        });
+
+        card.append(title, membersList);
+        results.appendChild(card);
+    });
+}
+
 function renderCount() {
     const total = people.length;
     const label = total === 1 ? "pessoa cadastrada" : "pessoas cadastradas";
@@ -189,6 +229,7 @@ leaderModeInputs.forEach((input) => {
 
 drawButton.addEventListener("click", () => {
     message.textContent = "";
+    results.innerHTML = "";
 
     const result = drawGroups(
         people,
@@ -202,7 +243,7 @@ drawButton.addEventListener("click", () => {
         return;
     }
 
-    console.log(result.groups);
+    renderResults(result.groups);
 });
 
 render();

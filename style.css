@@ -189,6 +189,9 @@ button:focus-visible {
 
 #results {
     margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
 }
 
 .person {
@@ -244,6 +247,58 @@ input[type="checkbox"] {
 .remove-button:hover {
     background-color: #b3261e;
     color: #fff;
+}
+
+.group {
+    border: 2px solid #1b6b4a;
+    border-radius: 10px;
+    overflow: hidden;
+
+    h3 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #1b6b4a;
+        color: #fff;
+        padding: 10px 12px;
+        font-size: 16px;
+
+        span {
+            font-size: 13px;
+            font-weight: 400;
+            color: #cfd8d3;
+        }
+    }
+
+    ul {
+        list-style: none;
+        padding: 8px 12px;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 0;
+        border-bottom: 1px solid #e6f4ec;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    li.leader {
+        font-weight: 600;
+    }
+}
+
+.badge {
+    background-color: #111;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
 }
 
 footer {
