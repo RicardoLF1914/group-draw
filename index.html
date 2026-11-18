@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,5 +10,18 @@
         <h1>Sorteio de Grupos</h1>
         <p>Cadastre as pessoas, configure o sorteio e forme os grupos.</p>
     </header>
+
+    <main>
+        <section id="people-section">
+        <h2>1. Pessoas</h2>
+        <form id="form">
+            <label for="name">Nome</label>
+            <input type="text" id="name" placeholder="Digite um nome" required>
+            <button type="submit">Adicionar</button>
+        </form>
+        <ul id="list"></ul>
+        <p id="count">0 pessoas cadastradas</p>
+        </section>
+    </main>
 </body>
 </html>
