@@ -115,7 +115,7 @@ fieldset {
         display: flex;
         align-items: center;
         gap: 8px;
-        margin: 6.4px 0;
+        margin: 6px 0;
         cursor: pointer;
     }
 }
@@ -161,8 +161,8 @@ button:focus-visible {
 #draw-button {
     width: 100%;
     background-color: #111111;
-    font-size: 17.6px;
-    padding: 12.8px;
+    font-size: 18px;
+    padding: 13px;
 }
 
 #draw-button:hover {
