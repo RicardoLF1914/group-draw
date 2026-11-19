@@ -52,6 +52,7 @@ Nothing is sent to any server. Names and settings are stored only in your own br
 ```
 group-draw/
 ├── index.html    # Page structure
+├── favicon.svg   # Site icon
 ├── style.css     # Styles and layout
 ├── script.js     # Registration, draw logic, and rendering
 └── README.md
