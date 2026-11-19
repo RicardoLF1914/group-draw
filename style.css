@@ -306,3 +306,12 @@ footer {
     font-size: 14px;
     color: #cfd8d3;
 }
+
+#clear-button {
+    margin-top: 12px;
+}
+
+#copy-button {
+    width: 100%;
+    margin-top: 16px;
+}

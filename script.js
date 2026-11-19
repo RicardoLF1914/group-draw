@@ -2,15 +2,18 @@ const form = document.querySelector("#form");
 const nameInput = document.querySelector("#name");
 const list = document.querySelector("#list");
 const count = document.querySelector("#count");
-const groupsCountInput = document.getElementById("groups-count");
-const maxMembersInput = document.getElementById("max-members");
-const drawButton = document.getElementById("draw-button");
-const message = document.getElementById("message");
-const results = document.getElementById("results");
+const groupsCountInput = document.querySelector("#groups-count");
+const maxMembersInput = document.querySelector("#max-members");
+const drawButton = document.querySelector("#draw-button");
+const message = document.querySelector("#message");
+const results = document.querySelector("#results");
+const clearButton = document.querySelector("#clear-button");
+const copyButton = document.querySelector("#copy-button");
 
 const leaderModeInputs = document.querySelectorAll('input[name="leader-mode"]');
 
 let people = [];
+let lastGroups = [];
 let nextId = 1;
 
 const STORAGE_KEY = "group-draw-state";
@@ -83,21 +86,33 @@ function nameExists(name) {
     );
 }
 
+function clearResults() {
+    lastGroups = [];
+    results.innerHTML = "";
+    message.textContent = "";
+    copyButton.hidden = true;
+}
+
+function handleChange() {
+    saveState();
+    clearResults();
+}
+
 function addPerson(name) {
     people.push({ id: nextId++, name, isLeader: false });
-    saveState();
+    handleChange();
 }
 
 function removePerson(id) {
     people = people.filter((person) => person.id !== id);
-    saveState();
+    handleChange();
 }
 
 function toggleLeader(id) {
     const person = people.find((person) => person.id === id);
     if (person) {
         person.isLeader = !person.isLeader;
-        saveState();
+        handleChange();
     }
 }
 
@@ -202,10 +217,23 @@ function renderResults(groups) {
     });
 }
 
+function formatGroupsAsText(groups) {
+    return groups
+        .map((group, index) => {
+            const lines = group.members.map((person) => {
+                const isLeader = group.leader && person.id === group.leader.id;
+                return `- ${person.name}${isLeader ? " (líder)" : ""}`;
+            });
+            return `Grupo ${index + 1}\n${lines.join("\n")}`;
+        })
+        .join("\n\n");
+}
+
 function renderCount() {
     const total = people.length;
     const label = total === 1 ? "pessoa cadastrada" : "pessoas cadastradas";
     count.textContent = `${total} ${label}`;
+    clearButton.hidden = total === 0;
 }
 
 function renderList() {
@@ -289,16 +317,15 @@ nameInput.addEventListener("input", () => {
 leaderModeInputs.forEach((input) => {
     input.addEventListener("change", () => {
         renderList();
-        saveState();
+        handleChange();
     });
 });
 
-groupsCountInput.addEventListener("input", saveState);
-maxMembersInput.addEventListener("input", saveState);
+groupsCountInput.addEventListener("input", handleChange);
+maxMembersInput.addEventListener("input", handleChange);
 
 drawButton.addEventListener("click", () => {
-    message.textContent = "";
-    results.innerHTML = "";
+    clearResults();
 
     const result = drawGroups(
         people,
@@ -312,7 +339,33 @@ drawButton.addEventListener("click", () => {
         return;
     }
 
-    renderResults(result.groups);
+    lastGroups = result.groups;
+    renderResults(lastGroups);
+    copyButton.hidden = false;
+});
+
+clearButton.addEventListener("click", () => {
+    if (!confirm("Remover todas as pessoas da lista?")) {
+        return;
+    }
+
+    people = [];
+    nextId = 1;
+    handleChange();
+    render();
+});
+
+copyButton.addEventListener("click", async () => {
+    try {
+        await navigator.clipboard.writeText(formatGroupsAsText(lastGroups));
+        copyButton.textContent = "Copiado!";
+    } catch (error) {
+        copyButton.textContent = "Não foi possível copiar";
+    }
+
+    setTimeout(() => {
+        copyButton.textContent = "Copiar resultado";
+    }, 2000);
 });
 
 loadState();
